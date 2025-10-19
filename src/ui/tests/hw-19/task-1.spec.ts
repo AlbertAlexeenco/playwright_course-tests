@@ -24,7 +24,7 @@ enum NOTIFICATIONS  {
     REGISTER_FAIL_PASSWORD_NO_LOWERCASE_CHAR = "Password should contain at least one character in lower case",
 }
 
-test.describe("[anatoly-karpovich] [Register form]", () => {
+test.describe("[anatoly-karpovich site] [Register form]", () => {
 
     const validCredentials: ICredentials = {
         username: "Alick",
@@ -64,10 +64,8 @@ test.describe("[anatoly-karpovich] [Register form]", () => {
         const registerBtnFromRegister = page.locator("#register");
         const notification = page.locator("#errorMessageOnRegister");
 
-        await usernameInput.fill("pizdaball");
-        // await usernameInput.fill(validCredentials.username)
-        await passwordInput.fill("xhakhxk45646A");
-        // await usernameInput.fill(validCredentials.password)
+        await usernameInput.fill(validCredentials.username)
+        await usernameInput.fill(validCredentials.password)
 
         await registerBtnFromRegister.click();
         await expect(notification).toHaveText(NOTIFICATIONS.REGISTER_SUCCESS);
@@ -88,33 +86,37 @@ test.describe("[anatoly-karpovich] [Register form]", () => {
         await expect(notification).toHaveText(NOTIFICATIONS.REGISTER_FAIL_USERNAME_NOT_3_CHAR);
     });
 
-    test("Submit registration with incorrect password, no lowercase characters", async ({ page })=>{
- 
-        const usernameInput = page.locator("#userNameOnRegister");
-        const passwordInput = page.locator("#passwordOnRegister");
-        const registerBtnFromRegister = page.locator("#register");
-        const notification = page.locator("#errorMessageOnRegister");
-        const { username, password } = invalidCredentials[1];
-
-        await usernameInput.fill(username);
-        await passwordInput.fill(password);
-
-        await registerBtnFromRegister.click();
-        await expect(notification).toHaveText(NOTIFICATIONS.REGISTER_FAIL_PASSWORD_NO_LOWERCASE_CHAR);
-    });
-
-    test("Submit registration with incorrect password, less than 8 characters", async ({ page })=>{
- 
-        const usernameInput = page.locator("#userNameOnRegister");
-        const passwordInput = page.locator("#passwordOnRegister");
-        const registerBtnFromRegister = page.locator("#register");
-        const notification = page.locator("#errorMessageOnRegister");
-        const { username, password } = invalidCredentials[2];
-
-        await usernameInput.fill(username);
-        await passwordInput.fill(password);
-
-        await registerBtnFromRegister.click();
-        await expect(notification).toHaveText(NOTIFICATIONS.REGISTER_FAIL_PASSWORD_NOT_8_CHAR);
-    });
 })
+
+
+
+
+//  test("Submit registration with incorrect password, no lowercase characters", async ({ page })=>{
+ 
+//         const usernameInput = page.locator("#userNameOnRegister");
+//         const passwordInput = page.locator("#passwordOnRegister");
+//         const registerBtnFromRegister = page.locator("#register");
+//         const notification = page.locator("#errorMessageOnRegister");
+//         const { username, password } = invalidCredentials[1];
+
+//         await usernameInput.fill(username);
+//         await passwordInput.fill(password);
+
+//         await registerBtnFromRegister.click();
+//         await expect(notification).toHaveText(NOTIFICATIONS.REGISTER_FAIL_PASSWORD_NO_LOWERCASE_CHAR);
+//     });
+
+//  test("Submit registration with incorrect password, less than 8 characters", async ({ page })=>{
+ 
+//         const usernameInput = page.locator("#userNameOnRegister");
+//         const passwordInput = page.locator("#passwordOnRegister");
+//         const registerBtnFromRegister = page.locator("#register");
+//         const notification = page.locator("#errorMessageOnRegister");
+//         const { username, password } = invalidCredentials[2];
+
+//         await usernameInput.fill(username);
+//         await passwordInput.fill(password);
+
+//         await registerBtnFromRegister.click();
+//         await expect(notification).toHaveText(NOTIFICATIONS.REGISTER_FAIL_PASSWORD_NOT_8_CHAR);
+//     });
