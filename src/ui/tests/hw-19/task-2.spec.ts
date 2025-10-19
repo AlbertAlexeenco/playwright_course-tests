@@ -14,21 +14,36 @@ interface IUser {
     email: string;
     phone: string;
     country: string;
-    gender: Gender;
-    hobbies: Hobbies[];
+    gender: GENDER;
+    hobbies: HOBBIES[];
     language: string;
-    skills: Skills;
+    skills: SKILLS;
     yearBirth: string;
     monthBirth: string;
     dayBirth: string;
     password: string;
 }
 
-type Skills = "JavaScript" | "Python" | "Java" | "C++" | "Rubby";
+enum SKILLS {
+    JAVASCRIPT = "JavaScript",
+    PYTHON = "Python",
+    JAVA = "Java",
+    C = "C++",
+    RUBBY = "Rubby",
+}
 
-type Hobbies = "Travelling"| "Movies" | "Sports" | "Gaming" | "Dancing";
+enum HOBBIES {
+    "Travelling",
+    "Movies",
+    "Sports",
+    "Gaming",
+    "Dancing",
+}
 
-type Gender = "Male" | "Female";
+enum GENDER {
+    "Male",
+    "Female"
+}
 
 const userInfo:IUser  = {
     firstName: "Alick",
@@ -37,10 +52,10 @@ const userInfo:IUser  = {
     email: "Googoosya21@gmail.com",
     phone: "+37378781407",
     country: "UK",
-    gender: "Male",
-    hobbies: ["Travelling" , "Sports"],
+    gender: GENDER.Male,
+    hobbies: [HOBBIES.Travelling, HOBBIES.Sports],
     language: "EN, RO, RU",
-    skills: "JavaScript",
+    skills: SKILLS.JAVASCRIPT,
     yearBirth: "1993",
     monthBirth: "September",
     dayBirth: "11",
@@ -52,7 +67,8 @@ test.describe("", () => {
     test("Submit registration form with valid credentials", async ({ page })=>{
 
     const url = "https://anatoly-karpovich.github.io/demo-registration-form/";
-    const registerPageTitle = page.locator("h2.text-center");
+    const RegisterPageTitle = page.locator("h2.text-center");
+    const RegisterDetailsPageTitle = page.locator("h2.text-center");
     const firstNameInput = page.locator("#firstName");
     const lastNameInput = page.locator("#lastName");
     const addressInput = page.locator("#address");
@@ -71,10 +87,9 @@ test.describe("", () => {
     const passwordInput = page.locator("#password");
     const passwordConfirmInput = page.locator("#password-confirm");
     const submitBtn = page.locator(`button[type="submit"]`);
-    const registerDetailsPageTitle = page.locator("h2.text-center");
 
     await page.goto(url);
-    await expect(registerPageTitle).toHaveText("Register");
+    await expect(RegisterPageTitle).toHaveText("Register");
     await firstNameInput.fill(userInfo.firstName);
     await lastNameInput.fill(userInfo.lastName);
     await addressInput.fill(userInfo.address);
@@ -83,21 +98,22 @@ test.describe("", () => {
     await countryDropdown.selectOption(userInfo.country);
     await expect(countryDropdown).toHaveValue(userInfo.country);
 
-    if(userInfo.gender === "Male"){
+    if(userInfo.gender === GENDER.Male){
         await genderMale.check();
         await expect(genderMale).toBeChecked();
-    } else if (userInfo.gender === "Female"){
+    } else if (userInfo.gender === GENDER.Female){
         await genderFemale.check();
         await expect(genderFemale).toBeChecked();
     }
-    
+        
     await hobbiesTravelling.check();
     await expect(hobbiesTravelling).toBeChecked();
     await hobbiesSports.check();
     await expect(hobbiesSports).toBeChecked();
+
     await languagesInput.fill(userInfo.language);
-    await skillsSelection.selectOption(userInfo.skills.toString());
-    await expect(skillsSelection).toHaveValue(userInfo.skills.toString());
+    await skillsSelection.selectOption(userInfo.skills);
+    await expect(skillsSelection).toHaveValue(userInfo.skills);
     await birthYearDropdown.selectOption(userInfo.yearBirth);
     await expect(birthYearDropdown).toHaveValue(userInfo.yearBirth);
     await birthMonthDropdown.selectOption(userInfo.monthBirth);
@@ -108,6 +124,9 @@ test.describe("", () => {
     await passwordConfirmInput.fill(userInfo.password);
     await submitBtn.click();
 
-    await expect(registerDetailsPageTitle).toHaveText("Registration Details");
+    await expect(RegisterDetailsPageTitle).toHaveText("Registration Details");
+
+    
     })
 })
+

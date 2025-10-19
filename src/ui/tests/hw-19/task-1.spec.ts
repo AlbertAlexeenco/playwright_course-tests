@@ -65,7 +65,7 @@ test.describe("[anatoly-karpovich site] [Register form]", () => {
         const notification = page.locator("#errorMessageOnRegister");
 
         await usernameInput.fill(validCredentials.username)
-        await usernameInput.fill(validCredentials.password)
+        await passwordInput.fill(validCredentials.password)
 
         await registerBtnFromRegister.click();
         await expect(notification).toHaveText(NOTIFICATIONS.REGISTER_SUCCESS);
