@@ -1,5 +1,4 @@
 import test, { expect } from "@playwright/test";
-import { LargeNumberLike } from "crypto";
 
 // Создайте ОДИН смоук тест со следующими шагами:
 
@@ -67,8 +66,8 @@ test.describe("", () => {
     test("Submit registration form with valid credentials", async ({ page })=>{
 
     const url = "https://anatoly-karpovich.github.io/demo-registration-form/";
-    const RegisterPageTitle = page.locator("h2.text-center");
-    const RegisterDetailsPageTitle = page.locator("h2.text-center");
+    const registerPageTitle = page.locator("h2.text-center");
+    const registerDetailsPageTitle = page.locator("h2.text-center");
     const firstNameInput = page.locator("#firstName");
     const lastNameInput = page.locator("#lastName");
     const addressInput = page.locator("#address");
@@ -89,7 +88,7 @@ test.describe("", () => {
     const submitBtn = page.locator(`button[type="submit"]`);
 
     await page.goto(url);
-    await expect(RegisterPageTitle).toHaveText("Register");
+    await expect(registerPageTitle).toHaveText("Register");
     await firstNameInput.fill(userInfo.firstName);
     await lastNameInput.fill(userInfo.lastName);
     await addressInput.fill(userInfo.address);
@@ -124,9 +123,7 @@ test.describe("", () => {
     await passwordConfirmInput.fill(userInfo.password);
     await submitBtn.click();
 
-    await expect(RegisterDetailsPageTitle).toHaveText("Registration Details");
-
-    
+    await expect(registerDetailsPageTitle).toHaveText("Registration Details");
     })
 })
 
