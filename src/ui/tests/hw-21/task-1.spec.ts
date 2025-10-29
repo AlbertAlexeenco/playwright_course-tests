@@ -1,6 +1,3 @@
-import test, { expect } from "@playwright/test";
-import invalidTestData from "../hw-21/register.data";
-
 // Создать тест сьют используя DDT подход с негативными тест-кейсами по регистрации на сайте
 // https://anatoly-karpovich.github.io/demo-login-form/
 
@@ -12,6 +9,9 @@ import invalidTestData from "../hw-21/register.data";
 // Страница логина:
 //   Username: обязательное
 //   Password: обязательное
+
+import test, { expect } from "@playwright/test";
+import invalidTestData from "../hw-21/register.data";
 
 test.describe("[anatoly-karpovich site][Demo Login Form] Registration form", () => {
 
