@@ -143,7 +143,8 @@ async function getCardDataInCheckout(page: Page, productName: string):Promise <I
     const amountLabel =  card.locator(`span[data-id="product-amount-in-shopping-cart"]`);
     const priceLabel =  card.locator(`span.text-muted`);
 
-    const [name, price, amount] = await Promise.all([titleLabel, priceLabel, amountLabel].map((el) => el.innerText()));
+    const [name, price, amount] = await Promise.all([titleLabel, priceLabel, amountLabel]
+      .map((el) => el.innerText()));
         return {
             name: name!,
             price: +price!.replace("$", ""),
