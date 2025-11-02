@@ -7,8 +7,12 @@ export abstract class SalesPortalPage extends BasePage {
   readonly toastMessage = this.page.locator(".toast-body");
   abstract readonly uniqueElement: Locator;
 
-  async waitForOpened() {
+async waitForOpened() {
     await expect(this.uniqueElement).toBeVisible();
+    await this.waitForSpinners();
+  }
+
+  async waitForSpinners() {
     await expect(this.spinner).toHaveCount(0);
   }
 
