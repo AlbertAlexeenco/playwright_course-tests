@@ -1,11 +1,11 @@
-import { test, expect } from "fixtures/pages.fixture";
+import { test, expect } from "fixtures/business.fixture";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import _ from "lodash";
 
 test.describe("[Sales Portal] [Products]", () => {
   //test with fixtures version 1
-  test("Product Details", async ({ page, homePage, productsListPage, addNewProductPage }) => {
+  test("Product Details", async ({ loginAsAdmin, homePage, productsListPage, addNewProductPage }) => {
   
     loginAsAdmin();
 

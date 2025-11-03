@@ -2,8 +2,11 @@ import { SalesPortalPage } from "../salesPortal.page";
 import { IProductInTable } from "data/types/product.types";
 import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
 import { ProductDetailsModal } from "../details.modal";
+import { ProductDeleteModal } from "../delete.modal";
 export class ProductsListPage extends SalesPortalPage {
   readonly detailsModal = new ProductDetailsModal(this.page);
+  readonly deleteModal = new ProductDeleteModal(this.page);
+
   readonly productsPageTitle = this.page.locator("h2.fw-bold");
   readonly addNewProductButton = this.page.locator('[name="add-button"]');
   readonly tableRow = this.page.locator("tbody tr");
