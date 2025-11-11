@@ -4,6 +4,10 @@ import Ajv from "ajv";
 export function validateJsonSchema(body: object, schema: object) {
   const ajv = new Ajv();
   const validate = ajv.compile(schema);
+  // console.log("validate -> ");
+  // console.log(validate);
+  // console.log("------------");
+  // console.log(body);
 
   const isValid = validate(body);
 

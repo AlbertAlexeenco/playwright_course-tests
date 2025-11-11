@@ -1,6 +1,6 @@
 
 import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
-import { ID, IResponseFields } from "./core.types";
+import { ICreatedOn, ID, IResponseFields } from "./core.types";
 
 export interface IProduct {
   name: string;
@@ -9,9 +9,7 @@ export interface IProduct {
   amount: number;
   notes?: string;
 }
-export interface ICreatedOn {
-  createdOn: string;
-}
+
 export interface IProductFromTable{
   name: string;
   price: number;
