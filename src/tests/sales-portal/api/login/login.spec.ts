@@ -10,7 +10,7 @@ import { apiConfig } from "config/apiConfig";
 import { credentials } from "config/env";
 import { loginSchema } from "data/schemas/login/login.schema";
 import { STATUS_CODES } from "data/statusCodes";
-import { validateResponse } from "utils/validateResponse.utils";
+import { validateResponse } from "utils/validation/validateResponse.utils";
 
 const { baseURL, endpoints } = apiConfig;
 
@@ -28,7 +28,7 @@ test.describe("[API] [Sales Portal] [Login]", () => {
     const token = headers["authorization"]!;
     expect(token).toBeTruthy();
 
-    await validateResponse(loginResponse, {
+    validateResponse(loginResponse, {
         status: STATUS_CODES.OK,
         schema: loginSchema,
         IsSuccess: true,

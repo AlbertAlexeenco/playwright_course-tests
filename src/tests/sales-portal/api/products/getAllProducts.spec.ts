@@ -7,14 +7,12 @@
 //   - проверить, что в массиве тела респонса есть созданный продукт
 //   - Проверить поля IsSuccess и ErrorMessage
 
-import test, { expect } from "@playwright/test";
-import { apiConfig } from "config/apiConfig";
-import { credentials } from "config/env";
-import { generateProductData } from "data/salesPortal/products/generateProductData";
+import { test, expect } from "fixtures/api.fixture";
+import { apiConfig } from "config/apiConfig"; 
 import { allProductsSchema } from "data/schemas/products/getaAllProducts.schema";
 import { STATUS_CODES } from "data/statusCodes";
 import _ from "lodash";
-import { validateResponse } from "utils/validateResponse.utils";
+import { validateResponse } from "utils/validation/validateResponse.utils";
 
 
 const { baseURL, endpoints } = apiConfig;
@@ -24,59 +22,24 @@ test.describe("[API] [Sales Portal] [Login]", () => {
   let id = "";
   let token = "";
 
-    test.afterEach(async ({ request }) => {
-        const response = await request.delete(`${baseURL}${endpoints.products}/${id}`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        expect(response.status()).toBe(STATUS_CODES.DELETED);
-      });
+ test.afterEach(async ({ productsApiService }) => {
+    if (id) await productsApiService.delete(token, id);
+  });
 
-  test("Get all products", async ({ request }) => {
+  test("Get all products", async ({ loginApiService, productsApiService, productsApi }) => {
 
     //login
-    const loginResponse = await request.post(baseURL + endpoints.login, {
-        data: credentials,
-        headers: {
-            "content-type": "application/json",
-        },
-    });
-
-    const headers = loginResponse.headers();
-    token = headers["authorization"]!;
-    expect(token).toBeTruthy();
+    token = await loginApiService.loginAsAdmin();
 
     //create product and check status
-    const productData = generateProductData();
-    const createProductResponse = await request.post(baseURL + endpoints.products, {
-        data: productData,
-        headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-    });
+    const createdProduct = await productsApiService.create(token);
+    id = createdProduct._id;
 
-    expect.soft(createProductResponse.status()).toBe(STATUS_CODES.CREATED);
-
-    const createProductBody = await createProductResponse.json();
-    const actualProductData = createProductBody.Product;
-    id = actualProductData._id;
-
-    expect(_.omit(actualProductData, ["_id", "createdOn"])).toEqual(productData);
-   
     // get all products
-    const getAllProductsResponse = await request.get(baseURL + endpoints.productsAll, {
-        headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-    },
-    })
+    const getAllProductsResponse = await productsApi.getAll(token);
 
     //create & check schema, check status code
-    const getAllPorductsBody = await getAllProductsResponse.json();
-    await validateResponse(getAllProductsResponse,{
+    validateResponse(getAllProductsResponse,{
       status: STATUS_CODES.OK,
       schema: allProductsSchema,
       IsSuccess: true,
@@ -84,6 +47,7 @@ test.describe("[API] [Sales Portal] [Login]", () => {
     })
 
     //   - проверить, что в массиве тела респонса есть созданный продукт
-    expect(getAllPorductsBody.Products).toContainEqual(createProductBody.Product);
+    expect(getAllProductsResponse.body.Products).toContainEqual(createdProduct);
+
   })
 })
