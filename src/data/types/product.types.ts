@@ -29,3 +29,9 @@ export interface IProductResponse extends IResponseFields {
 export interface IProductsResponse extends IResponseFields {
   Products: IProductFromResponse[];
 }
+
+export interface ICreateProduct {
+    title: string,
+    productData: Partial<IProduct>,
+    expectedStatus: number
+}
