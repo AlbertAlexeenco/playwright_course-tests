@@ -1,6 +1,7 @@
 
 import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
-import { ICreatedOn, ID, IResponseFields } from "./core.types";
+import { ICreatedOn, ID, IResponseFields,SortOrder } from "./core.types";
+
 
 export interface IProduct {
   name: string;
@@ -30,6 +31,27 @@ export interface IProductsResponse extends IResponseFields {
   Products: IProductFromResponse[];
 }
 
+export interface IProductsSortedResponse extends IProductsResponse {
+  total: number;
+  page: number;
+  limit: number;
+  search: string;
+  manufacturer: string[];
+  sorting: {
+    sortField: ProductsSortField;
+    sortOrder: SortOrder;
+  };
+}
+
+export type ProductsSortField = "createdOn" | "manufacturer" | "price" | "name";
+
+export interface IGetProductsParams {
+  manufacturer: MANUFACTURERS[];
+  search: string;
+  sortField: ProductsSortField;
+  sortOrder: SortOrder;
+  page: number;
+  limit: number;
 export interface ICreateProduct {
     title: string,
     productData: Partial<IProduct>,
