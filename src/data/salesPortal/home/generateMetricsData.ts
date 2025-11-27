@@ -13,16 +13,16 @@ export function generateMetricsData(params?: Partial<IMetrics>): IMetrics{
             recentOrders: [],
             ordersCountPerDay: [],
         },
+        
         customers: {
             totalNewCustomers: faker.number.int({ min: 1, max: 1000 }) ,
             topCustomers: [],
             customerGrowth: [],
-
         },
         products: {
             topProducts: [],
         },
-        ...params,
+         ...params
     };
 }
 
