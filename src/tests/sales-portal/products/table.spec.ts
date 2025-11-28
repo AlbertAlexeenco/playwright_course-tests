@@ -6,14 +6,14 @@ import _ from "lodash";
 import { HomePage } from "ui/pages/home.page";
 import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
-import { SignInPage } from "ui/pages/signin.page";
+import { LoginPage } from "ui/pages/login.page";
 
 test.describe("[Sales Portal] [Products]", () => {
   test("Table parsing", async ({ page }) => {
     const homePage = new HomePage(page);
     const productsListPage = new ProductsListPage(page);
     const addNewProductPage = new AddNewProductPage(page);
-    const signInPage = new SignInPage(page);
+    const signInPage = new LoginPage(page);
 
     await signInPage.open();
     await signInPage.fillCredentials(credentials);
