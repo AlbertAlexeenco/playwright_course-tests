@@ -1,6 +1,7 @@
 import { expect, Page } from "@playwright/test";
 import { IProductDetails } from "data/types/product.types";
 import _ from "lodash";
+import { ProductDetailsModal } from "ui/pages/details.modal";
 import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
 import { convertToFullDateAndTime } from "utils/date.utils";

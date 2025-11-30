@@ -1,30 +1,29 @@
-import { IProductInTable, ProductsTableHeader } from "data/types/product.types";
-import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
-import { ProductDetailsModal } from "ui/pages/details.modal";
+
 import { SalesPortalPage } from "ui/pages/salesPortal.page";
 import { ConfirmationModal } from "ui/pages/confirmation.modal";
+import { CustomersTableHeader, ICustomerInTable } from "data/types/customers.types";
+import { COUNTRIES } from "data/salesPortal/customers/countries";
 
 
 
-export class ProductsListPage extends SalesPortalPage {
-  readonly detailsModal = new ProductDetailsModal(this.page);
+export class CustomersListPage extends SalesPortalPage {
   readonly deleteModal = new ConfirmationModal(this.page);
 
-  readonly productsPageTitle = this.page.locator("h2.fw-bold");
-  readonly addNewProductButton = this.page.locator('[name="add-button"]');
+  readonly customerPageTitle = this.page.locator("h2.fw-bold");
+  readonly addNewCustomerButton = this.page.locator('[name="add-button"]');
   readonly tableRow = this.page.locator("tbody tr");
   
-  readonly tableRowByName = (productName: string) =>
-    this.page.locator(`//table/tbody/tr[./td[text()="${productName}"]]`);
+  readonly tableRowByName = (customerName: string) =>
+    this.page.locator(`//table/tbody/tr[./td[text()="${customerName}"]]`);
 
   readonly firstRowLocator = this.page.locator("table tbody>tr:first-child");
   readonly firstRowCellsLocator = this.firstRowLocator.locator("td")
     .filter({hasNot: this.page.locator("button")});
 
   readonly tableRowByIndex = (index: number) => this.page.locator("table tbody tr").nth(index);
-  readonly nameCell = (productName: string) => this.tableRowByName(productName).locator("td").nth(0);
-  readonly priceCell = (productName: string) => this.tableRowByName(productName).locator("td").nth(1);
-  readonly manufacturerCell = (productName: string) => this.tableRowByName(productName).locator("td").nth(2);
+  readonly nameCell = (customerName: string) => this.tableRowByName(customerName).locator("td").nth(0);
+  readonly priceCell = (customerName: string) => this.tableRowByName(customerName).locator("td").nth(1);
+  readonly manufacturerCell = (customerName: string) => this.tableRowByName(customerName).locator("td").nth(2);
   // readonly createdOnCell = (productName: string) => this.tableRowByName(productName).locator("td").nth(3);
   readonly createdOnCell = (nameOrIndex: string | number) =>
     typeof nameOrIndex === "string"
@@ -33,38 +32,38 @@ export class ProductsListPage extends SalesPortalPage {
 
   readonly tableHeader = this.page.locator("thead th div[current]");
   // readonly nameHeader = this.tableHeader.nth(0);
-  readonly tableHeaderNamed = (name: ProductsTableHeader) => this.tableHeader.filter({ hasText: name });
+  readonly tableHeaderNamed = (name: CustomersTableHeader) => this.tableHeader.filter({ hasText: name });
 
-  readonly tableHeaderArrow = (name: ProductsTableHeader, { direction }: { direction: "asc" | "desc" }) =>
+  readonly tableHeaderArrow = (name: CustomersTableHeader, { direction }: { direction: "asc" | "desc" }) =>
     this.page
       .locator("thead th", { has: this.page.locator("div[current]", { hasText: name }) })
       .locator(`i.${direction === "asc" ? "bi-arrow-down" : "bi-arrow-up"}`);
 
-  readonly editButton = (productName: string) => this.tableRowByName(productName).getByTitle("Edit");
-  readonly detailsButton = (productName: string) => this.tableRowByName(productName).getByTitle("Details");
-  readonly deleteButton = (productName: string) => this.tableRowByName(productName).getByTitle("Delete");
+  readonly editButton = (customerName: string) => this.tableRowByName(customerName).getByTitle("Edit");
+  readonly detailsButton = (customerName: string) => this.tableRowByName(customerName).getByTitle("Details");
+  readonly deleteButton = (customerName: string) => this.tableRowByName(customerName).getByTitle("Delete");
 
   readonly searchInput = this.page.locator("#search");
   readonly searchButton = this.page.locator("#search-products");
 
-  readonly uniqueElement = this.addNewProductButton;
+  readonly uniqueElement = this.addNewCustomerButton;
 
-  async clickAddNewProduct() {
-    await this.addNewProductButton.click();
+  async clickAddNewCustomer() {
+    await this.addNewCustomerButton.click();
   }
 
-  async getFirstRowProduct() : Promise<IProductInTable>{
-    const [name, price, manufacturer, createdOn] = await this.firstRowCellsLocator.allInnerTexts(); 
+  async getFirstRowCustomer() : Promise<ICustomerInTable>{
+    const [email, name, country, createdOn] = await this.firstRowCellsLocator.allInnerTexts(); 
     
     return {
+      email: email!,
       name: name!,
-      price: +price!.replace(/\D/g, ""),
-      manufacturer: manufacturer as MANUFACTURERS,
+      country: country as COUNTRIES,
       createdOn: createdOn!
     }
   }
 
-  async getProductData(productName: string): Promise<IProductInTable> {
+  async getCustomerData(customerName: string): Promise<ICustomerInTable> {
     //Variant 1
     // return {
     //   name: await this.nameCell(productName).innerText(),
@@ -88,26 +87,26 @@ export class ProductsListPage extends SalesPortalPage {
     // };
 
     //variant 3
-    const [name, price, manufacturer, createdOn] = await this.tableRowByName(productName).locator("td").allInnerTexts();
+    const [email, name, country, createdOn] = await this.tableRowByName(customerName).locator("td").allInnerTexts();
     return {
+      email: email!,
       name: name!,
-      price: +price!.replace("$", ""),
-      manufacturer: manufacturer! as MANUFACTURERS,
-      createdOn: createdOn!,
+      country: country as COUNTRIES,
+      createdOn: createdOn!
     };
   }
 
-  async getTableData(): Promise<IProductInTable[]> {
-    const data: IProductInTable[] = [];
+  async getTableData(): Promise<ICustomerInTable[]> {
+    const data: ICustomerInTable[] = [];
 
     const rows = await this.tableRow.all();
     for (const row of rows) {
-      const [name, price, manufacturer, createdOn] = await row.locator("td").allInnerTexts();
+      const [email, name, country, createdOn] = await row.locator("td").allInnerTexts();
       data.push({
-        name: name!,
-        price: +price!.replace("$", ""),
-        manufacturer: manufacturer! as MANUFACTURERS,
-        createdOn: createdOn!,
+        email: email!,
+      name: name!,
+      country: country as COUNTRIES,
+      createdOn: createdOn!
       });
     }
     return data;
@@ -119,7 +118,7 @@ export class ProductsListPage extends SalesPortalPage {
     if (button === "details") await this.detailsButton(productName).click();
   }
 
-  async clickTableHeader(name: ProductsTableHeader) {
+  async clickTableHeader(name: CustomersTableHeader) {
     await this.tableHeaderNamed(name).click();
   }
 

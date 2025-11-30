@@ -1,14 +1,5 @@
-
 import { test, expect } from "fixtures/business.fixture";
-import { credentials } from "config/env";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
-import { generateProductData } from "data/salesPortal/products/generateProductData";
-
-import { HomePage } from "ui/pages/home.page";
-import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
-import { ProductsListPage } from "ui/pages/products/productsList.page";
-import { LoginPage } from "ui/pages/login.page";
-
 
 test.describe("[Sales Portal] [Products]", async () => {
 
