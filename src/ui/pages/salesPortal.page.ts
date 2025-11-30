@@ -22,7 +22,7 @@ async waitForOpened() {
     await this.closeToastBtn.click();
   }
 
-  async open() {
-    await this.page.goto(SALES_PORTAL_URL);
+  async open(route?: string) {
+    await this.page.goto(SALES_PORTAL_URL + route);
   }
 }

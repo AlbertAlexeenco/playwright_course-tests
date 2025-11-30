@@ -23,11 +23,11 @@ import { test, expect } from "fixtures/pages.fixture";
 
 test.describe("[Sales Portal] [Products]", () => {
 
-    test("Delete products from table", async ({ page, signInPage, homePage, productsListPage, addNewProductPage }) => {
+    test("Delete products from table", async ({ page, loginPage, homePage, productsListPage, addNewProductPage }) => {
     
-    await signInPage.open();
-    await signInPage.fillCredentials(credentials);
-    await signInPage.clickLoginBtn();
+    await loginPage.open();
+    await loginPage.fillCredentials(credentials);
+    await loginPage.clickLoginBtn();
     
     await homePage.waitForOpened();
     await homePage.clickOnViewModule("Products");
@@ -48,7 +48,7 @@ test.describe("[Sales Portal] [Products]", () => {
     
     const { deleteModal } = productsListPage;
     await deleteModal.waitForOpened();
-    await deleteModal.clickDelete();
+    await deleteModal.clickConfirm();
     await deleteModal.modalIsClosed();
 
     await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_DELETED);
