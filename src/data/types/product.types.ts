@@ -52,8 +52,11 @@ export interface IGetProductsParams {
   sortOrder: SortOrder;
   page: number;
   limit: number;
+}
 export interface ICreateProduct {
     title: string,
     productData: Partial<IProduct>,
     expectedStatus: number
 }
+
+export type ProductsTableHeader = "Name" | "Price" | "Manufacturer" | "Created On";
