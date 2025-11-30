@@ -32,6 +32,11 @@ const test = base.extend<IApi>({
     const api = new LoginApi(apiClient);
     await use(api);
   },
+  customersApi: async ({ request }, use) => {
+    const apiClient = new RequestApi(request);
+    const api = new CustomersApi(apiClient);
+    await use(api);
+  },
 
   //services
   productsApiService: async ({ productsApi }, use) => {
@@ -40,8 +45,6 @@ const test = base.extend<IApi>({
   customersApiService: async ({ customersApi }, use) => {
     await use(new CustomersApiService(customersApi));
   },
-
-
   loginApiService: async ({ loginApi }, use) => {
     await use(new LoginService(loginApi));
   },

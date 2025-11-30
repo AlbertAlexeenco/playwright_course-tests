@@ -11,6 +11,7 @@ import { EditProductPage } from "ui/pages/products";
 import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
 import { AddNewProductUIService } from "ui/services/addNewProduct.ui-service";
+import { CustomersListUIService } from "ui/services/customers/customersList.ui-service";
 import { EditProductUIService } from "ui/services/editProduct.ui-service";
 import { HomeUIService } from "ui/services/home.ui-service";
 import { LoginUIService } from "ui/services/login.ui-service";
@@ -34,6 +35,7 @@ export interface IPages {
   addNewProductUIService: AddNewProductUIService;
   loginUIService: LoginUIService;
   editProductUIService: EditProductUIService;
+  customersListUIService: CustomersListUIService,
   
 }
 
@@ -65,6 +67,11 @@ export const test = base.extend<IPages>({
 
 
    //ui-services
+    
+  loginUIService: async ({ page }, use) => {
+    await use(new LoginUIService(page));
+  },
+  
   homeUIService: async ({ page }, use) => {
     await use(new HomeUIService(page));
   },
@@ -76,13 +83,15 @@ export const test = base.extend<IPages>({
   addNewProductUIService: async ({ page }, use) => {
     await use(new AddNewProductUIService(page));
   },
+
   editProductUIService: async ({ page }, use) => {
     await use(new EditProductUIService(page));
   },
 
-  loginUIService: async ({ page }, use) => {
-    await use(new LoginUIService(page));
+  customersListUIService: async ({ page }, use) => {
+    await use(new CustomersListUIService(page));
   },
+
 });
 
 // export class Pages {

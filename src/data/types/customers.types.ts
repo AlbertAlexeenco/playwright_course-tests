@@ -1,4 +1,4 @@
-import { ICreatedOn, ID } from "./core.types";
+import { ICreatedOn, ID, IResponseFields } from "./core.types";
 import { ICustomerGrowth } from "./metrics.types";
 
 export interface ICustomers {
@@ -32,7 +32,11 @@ export interface ICustomerFromTable{
     country: string,
 }
 
-export interface ICustomerFromResponse extends Required<ICustomer>, ICreatedOn, ID {} 
+export interface ICustomerFromResponse extends Required<ICustomer>, ICreatedOn, ID {}
+
+export interface ICustomerResponse extends IResponseFields {
+    Customer: ICustomerFromResponse;
+}
 
 export interface ICustomerInTable extends ICustomerFromTable, ICreatedOn {}
 

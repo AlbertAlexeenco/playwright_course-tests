@@ -6,14 +6,14 @@ import { getRandomEnumValue } from "utils/enum.utils";
 export function generateCustomerData(params?: Partial<ICustomer>):ICustomer{
     return {
         email: faker.internet.email() ,
-        name: faker.person.fullName() ,
+        name: faker.string.alpha({ length: { min: 1, max: 40 } }),
         country: getRandomEnumValue(COUNTRIES),
         city: faker.location.city(),
-        street: faker.location.street(),
+        street: faker.string.alphanumeric({ length: {min: 1, max: 40} }),
         house: faker.number.int({ min: 1, max: 199 }),
         flat: faker.number.int({ min: 1, max: 9 }),
-        phone: "+" + faker.string.numeric({length: 10   }),
-        notes: faker.string.alphanumeric({ length: 250 }),
+        phone: "+" + faker.string.numeric({length: 10 }),
+        notes: faker.string.alphanumeric({ length:  {min: 1, max: 250} }),
         ...params,
     }
 }
