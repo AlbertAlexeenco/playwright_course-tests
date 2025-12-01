@@ -4,6 +4,11 @@ import { IResponse } from "data/types/core.types";
 export abstract class BasePage {
   constructor(protected page: Page) {}
 
+  async getAuthToken() {
+    const token = (await this.page.context().cookies()).find((c) => c.name === "Authorization")!.value;
+    return token;
+  }
+
   async interceptRequest<T extends unknown[]>(url: string, triggerAction: (...args: T) => Promise<void>, ...args: T) {
     const [request] = await Promise.all([
       this.page.waitForRequest((request) => request.url().includes(url)),

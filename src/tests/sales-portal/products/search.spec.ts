@@ -1,26 +1,36 @@
 import { IProduct } from "data/types/product.types";
 import { expect, test } from "fixtures/business.fixture";
+import { TAGS } from "data/tags";
 
 test.describe("[Sales Portal] [Products]", () => {
   let id = "";
   let token = "";
 
-  const fields = ["name", "price", "manufacturer"] as (keyof IProduct)[];
-  for (const field of fields) {
-    test(`Search by ${field} field`, async ({ loginUIService, productsApiService, productsListUIService }) => {
-      token = await loginUIService.loginAsAdmin();
-      const product = await productsApiService.create(token);
-      id = product._id;
-      await productsListUIService.open();
-      await productsListUIService.search(String(product[field]));
-      await productsListUIService.assertProductInTable(product.name, { visible: true });
-    });
-  }
-
   test.afterEach(async ({ productsApiService }) => {
     if (id) await productsApiService.delete(token, id);
     id = "";
   });
+
+  const fields = ["name", "price", "manufacturer"] as (keyof IProduct)[];
+  for (const field of fields) {
+    test(
+      `Search by ${field} field`,
+      {
+        tag: [TAGS.SMOKE, TAGS.PRODUCTS],
+      },
+      async ({ productsApiService, productsListUIService, productsListPage }) => {
+        token = await productsListPage.getAuthToken();
+        const product = await productsApiService.create(token);
+        id = product._id;
+        await productsListUIService.open();
+        await productsListUIService.search(String(product[field]));
+        await productsListUIService.assertProductInTable(product.name, { visible: true });
+      },
+    );
+
+
+
+
   test.skip("Search by name", async ({
     loginUIService,
     productsApiService,
@@ -66,4 +76,5 @@ test.describe("[Sales Portal] [Products]", () => {
     await productsListUIService.search(product.manufacturer);
     await expect(productsListPage.tableRowByName(product.name)).toBeVisible();
   });
-});
+}
+})

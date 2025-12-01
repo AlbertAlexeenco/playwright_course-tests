@@ -1,5 +1,6 @@
 import { test, expect } from "fixtures/business.fixture";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
+import { TAGS } from "data/tags";
 
 test.describe("[Sales Portal] [Products]", async () => {
 
@@ -11,7 +12,22 @@ test.describe("[Sales Portal] [Products]", async () => {
     id = "";
   });
 
-  test("Add new product with services", async ({
+  test(
+    "Add new product with services",
+    {
+      tag: [TAGS.SMOKE, TAGS.REGRESSION, TAGS.PRODUCTS],
+    },
+    async ({ addNewProductUIService, productsListPage }) => {
+      await addNewProductUIService.open();
+      const createdProduct = await addNewProductUIService.create();
+      id = createdProduct._id;
+      token = await productsListPage.getAuthToken();
+      await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
+      await expect(productsListPage.tableRowByName(createdProduct.name)).toBeVisible();
+    },
+  );
+
+  test.skip("Add new product with services MID OLD", async ({
     loginUIService,
     // homeUIService,
     // productsListUIService,

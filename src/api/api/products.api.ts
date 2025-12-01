@@ -9,6 +9,7 @@ import {
   IProductsSortedResponse,
 } from "data/types/product.types";
 import { convertRequestParams } from "utils/queryParams.utils";
+import { logStep } from "utils/report/logStep.utils";
 
 export class ProductsApi {
   constructor(private apiClient: IApiClient) {}
@@ -18,7 +19,8 @@ export class ProductsApi {
   //get all
   //get with pagination
   //delete
-
+  
+  @logStep("POST /api/products")
   async create(product: IProduct, token: string) {
     const options: IRequestOptions = {
       baseURL: apiConfig.baseURL, //backend url
