@@ -5,26 +5,26 @@
 //   - проверить статус
 //   - проверить наличие токена в хедерах
 
-import test, { expect } from "@playwright/test";
+import { expect, test } from "fixtures/business.fixture";
 import { apiConfig } from "config/apiConfig";
 import { credentials } from "config/env";
 import { loginSchema } from "data/schemas/login/login.schema";
 import { STATUS_CODES } from "data/statusCodes";
+import { TAGS } from "data/tags";
 import { validateResponse } from "utils/validation/validateResponse.utils";
 
 const { baseURL, endpoints } = apiConfig;
 
 test.describe("[API] [Sales Portal] [Login]", () => {
 
-  test("SignIn with valid credentials", async ({ request }) => {
-    const loginResponse = await request.post(baseURL + endpoints.login, {
-        data: credentials,
-        headers: {
-        "content-type": "application/json",
-        },
-    });
+  test("SignIn with valid credentials via API",
+    {
+      tag: [TAGS.SMOKE, TAGS.API, TAGS.REGRESSION],
+    },
+     async ({ loginApi }) => {
+      const loginResponse = await loginApi.login(credentials);
 
-    const headers = loginResponse.headers();
+    const headers = loginResponse.headers;
     const token = headers["authorization"]!;
     expect(token).toBeTruthy();
 

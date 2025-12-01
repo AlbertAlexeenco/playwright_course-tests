@@ -16,23 +16,20 @@
 // - Подключить модалку в PageObject страницы Products
 // - Использовать фикстуры
 
-import { credentials } from "config/env";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
-import { test, expect } from "fixtures/pages.fixture";
+import { TAGS } from "data/tags";
+import { test, expect } from "fixtures/business.fixture"
 
-test.describe("[Sales Portal] [Products]", () => {
+test.describe("[Sales Portal] [Products]", async () => {
 
-    test("Delete products from table", async ({ page, signInPage, homePage, productsListPage, addNewProductPage }) => {
+    test("Delete products from table",
+        {
+            tag: [TAGS.SMOKE, TAGS.PRODUCTS, TAGS.UI, TAGS.REGRESSION],
+        },
+        async ({ productsListUIService, homePage, productsListPage, addNewProductPage }) => {
     
-    await signInPage.open();
-    await signInPage.fillCredentials(credentials);
-    await signInPage.clickLoginBtn();
-    
-    await homePage.waitForOpened();
-    await homePage.clickOnViewModule("Products");
-
-    await productsListPage.waitForOpened();
+    await productsListUIService.open();
     await productsListPage.clickAddNewProduct();
     
     await addNewProductPage.waitForOpened();
@@ -48,7 +45,7 @@ test.describe("[Sales Portal] [Products]", () => {
     
     const { deleteModal } = productsListPage;
     await deleteModal.waitForOpened();
-    await deleteModal.clickDelete();
+    await deleteModal.clickConfirm();
     await deleteModal.modalIsClosed();
 
     await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_DELETED);

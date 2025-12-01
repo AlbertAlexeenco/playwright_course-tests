@@ -1,15 +1,20 @@
-import { SalesPortalPage } from "../salesPortal.page";
 import { IProductInTable, ProductsTableHeader } from "data/types/product.types";
 import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
-import { ProductDetailsModal } from "../details.modal";
-import { ProductDeleteModal } from "../delete.modal";
+import { ProductDetailsModal } from "ui/pages/details.modal";
+import { SalesPortalPage } from "ui/pages/salesPortal.page";
+import { ConfirmationModal } from "ui/pages/confirmation.modal";
+import { logStep } from "utils/report/logStep.utils";
+
+
+
 export class ProductsListPage extends SalesPortalPage {
   readonly detailsModal = new ProductDetailsModal(this.page);
-  readonly deleteModal = new ProductDeleteModal(this.page);
+  readonly deleteModal = new ConfirmationModal(this.page);
 
   readonly productsPageTitle = this.page.locator("h2.fw-bold");
   readonly addNewProductButton = this.page.locator('[name="add-button"]');
   readonly tableRow = this.page.locator("tbody tr");
+  
   readonly tableRowByName = (productName: string) =>
     this.page.locator(`//table/tbody/tr[./td[text()="${productName}"]]`);
 
@@ -40,12 +45,17 @@ export class ProductsListPage extends SalesPortalPage {
   readonly detailsButton = (productName: string) => this.tableRowByName(productName).getByTitle("Details");
   readonly deleteButton = (productName: string) => this.tableRowByName(productName).getByTitle("Delete");
 
+  readonly searchInput = this.page.locator("#search");
+  readonly searchButton = this.page.locator("#search-products");
+
   readonly uniqueElement = this.addNewProductButton;
 
+  @logStep("Click Add New Product btn on Products List page")
   async clickAddNewProduct() {
     await this.addNewProductButton.click();
   }
 
+  @logStep("Get first row product data from Products List table")
   async getFirstRowProduct() : Promise<IProductInTable>{
     const [name, price, manufacturer, createdOn] = await this.firstRowCellsLocator.allInnerTexts(); 
     
@@ -57,6 +67,7 @@ export class ProductsListPage extends SalesPortalPage {
     }
   }
 
+  @logStep("Get product data from Products List table by product name")
   async getProductData(productName: string): Promise<IProductInTable> {
     //Variant 1
     // return {
@@ -90,6 +101,7 @@ export class ProductsListPage extends SalesPortalPage {
     };
   }
 
+  @logStep("Get all products data from Products List table")
   async getTableData(): Promise<IProductInTable[]> {
     const data: IProductInTable[] = [];
 
@@ -106,13 +118,25 @@ export class ProductsListPage extends SalesPortalPage {
     return data;
   }
 
+  @logStep("Click action btn on Products List page")
   async clickAction(productName: string, button: "edit" | "delete" | "details") {
     if (button === "edit") await this.editButton(productName).click();
     if (button === "delete") await this.deleteButton(productName).click();
     if (button === "details") await this.detailsButton(productName).click();
   }
 
+  @logStep("Click table header on Products List page")
   async clickTableHeader(name: ProductsTableHeader) {
     await this.tableHeaderNamed(name).click();
+  }
+
+  @logStep("Fill search input on Products List page")
+   async fillSearchInput(text: string) {
+    await this.searchInput.fill(text);
+  }
+
+  @logStep("Click search btn on Products List page")
+  async clickSearch() {
+    await this.searchButton.click();
   }
 }
