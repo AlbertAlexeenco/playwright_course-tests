@@ -64,6 +64,7 @@ export class ProductsListUIService {
     });
   }
 
+  @logStep("Assert Product is present in Products List Table")
   async assertProductInTable(productName: string, { visible }: { visible: boolean }) {
     await expect(
       this.productsListPage.tableRowByName(productName),

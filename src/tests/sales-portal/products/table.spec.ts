@@ -1,4 +1,4 @@
-import test, { expect } from "@playwright/test";
+import { expect, test } from "fixtures/business.fixture";
 import { credentials } from "config/env";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
@@ -7,21 +7,26 @@ import { HomePage } from "ui/pages/home.page";
 import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
 import { LoginPage } from "ui/pages/login.page";
+import { TAGS } from "data/tags";
 
 test.describe("[Sales Portal] [Products]", () => {
-  test("Table parsing", async ({ page }) => {
-    const homePage = new HomePage(page);
+  test("Table parsing",
+    {
+      tag: [TAGS.PRODUCTS, TAGS.VISUAL_REGRESSION, TAGS.API, TAGS.REGRESSION],
+    },
+    async ({ page, productsListUIService }) => {
     const productsListPage = new ProductsListPage(page);
     const addNewProductPage = new AddNewProductPage(page);
-    const signInPage = new LoginPage(page);
 
-    await signInPage.open();
-    await signInPage.fillCredentials(credentials);
-    await signInPage.clickLoginBtn();
+    // await signInPage.open();
+    // await signInPage.fillCredentials(credentials);
+    // await signInPage.clickLoginBtn();
 
-    await homePage.waitForOpened();
-    await homePage.clickOnViewModule("Products");
-    await productsListPage.waitForOpened();
+    // await homePage.waitForOpened();
+    // await homePage.clickOnViewModule("Products");
+    // await productsListPage.waitForOpened();
+
+    await productsListUIService.open();
     await productsListPage.clickAddNewProduct();
     await addNewProductPage.waitForOpened();
     const productData = generateProductData();

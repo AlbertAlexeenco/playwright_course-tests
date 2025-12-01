@@ -1,10 +1,12 @@
 import { expect, Page } from "@playwright/test";
 import { apiConfig } from "config/apiConfig";
+import { log } from "console";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import { STATUS_CODES } from "data/statusCodes";
 import { IProduct, IProductResponse } from "data/types/product.types";
 import _ from "lodash";
 import { EditProductPage, ProductsListPage } from "ui/pages/products";
+import { logStep } from "utils/report/logStep.utils";
 
 export class EditProductUIService {
     editProductPage: EditProductPage;
@@ -20,12 +22,14 @@ export class EditProductUIService {
     //     await this.editProductPage.waitForOpened();
     // }
 
+    @logStep("Open Edit Product Page")
     async open(product: IProduct) {
         //this.productsListPage.tableRowByName(product.name);
         this.productsListPage.clickAction(product.name, "edit");
         await this.editProductPage.waitForOpened();
     }
 
+    @logStep("Edit Product via UI")
     async editProductData(productData?: Partial<IProduct>){
         const data = generateProductData(productData);
         await this.editProductPage.clearAllFields();

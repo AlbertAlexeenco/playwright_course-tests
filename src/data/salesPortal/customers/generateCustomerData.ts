@@ -8,7 +8,7 @@ export function generateCustomerData(params?: Partial<ICustomer>):ICustomer{
         email: faker.internet.email() ,
         name: faker.string.alpha({ length: { min: 1, max: 40 } }),
         country: getRandomEnumValue(COUNTRIES),
-        city: faker.location.city(),
+        city: faker.string.alpha({ length: { min: 1, max: 20 } }),
         street: faker.string.alphanumeric({ length: {min: 1, max: 40} }),
         house: faker.number.int({ min: 1, max: 199 }),
         flat: faker.number.int({ min: 1, max: 9 }),

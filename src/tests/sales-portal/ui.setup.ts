@@ -1,3 +1,4 @@
+import { TAGS } from "data/tags";
 import { test } from "fixtures";
 import path from "path";
 
@@ -8,7 +9,11 @@ const authFile = path.resolve(process.cwd(), "src", ".auth", "user.json");
 //   await page.context().storageState({ path: authFile });
 // });
 
-test("Login as Admin via API", async ({ page, loginApiService }) => {
+test("Login as Admin via API",
+  {
+    tag: [TAGS.SMOKE, TAGS.PRODUCTS, TAGS.API],
+  },
+  async ({ page, loginApiService }) => {
   const token = await loginApiService.loginAsAdmin();
   await page.context().addCookies([
     {

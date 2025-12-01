@@ -2,23 +2,28 @@ import { test, expect } from "fixtures/business.fixture";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import _ from "lodash";
+import { TAGS } from "data/tags";
 
 test.describe("[Sales Portal] [Products]", () => {
 
   let id = "";
   let token = "";
 
-  test("Product Details with services", async ({
+  test("Product Details with services",
+    {
+      tag: [TAGS.SMOKE, TAGS.PRODUCTS, TAGS.UI, TAGS.REGRESSION],
+    },
+    async ({
     loginUIService,
     homeUIService,
     productsListUIService,
     productsApiService,
     productsListPage,
   }) => {
-    token = await loginUIService.loginAsAdmin();
+    token = await productsListPage.getAuthToken();
     const createdProduct = await productsApiService.create(token);
     id = createdProduct._id;
-    await homeUIService.openModule("Products");
+    await productsListUIService.open();
     await productsListUIService.openDetailsModal(createdProduct.name);
     const actual = await productsListPage.detailsModal.getData();
     productsListUIService.assertDetailsData(actual, createdProduct);

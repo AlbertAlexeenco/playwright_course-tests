@@ -1,13 +1,9 @@
 import { Page } from "@playwright/test";
 import { IResponse } from "data/types/core.types";
+import { logStep } from "utils/report/logStep.utils";
 
 export abstract class BasePage {
   constructor(protected page: Page) {}
-
-  async getAuthToken() {
-    const token = (await this.page.context().cookies()).find((c) => c.name === "Authorization")!.value;
-    return token;
-  }
 
   async interceptRequest<T extends unknown[]>(url: string, triggerAction: (...args: T) => Promise<void>, ...args: T) {
     const [request] = await Promise.all([
@@ -31,5 +27,11 @@ export abstract class BasePage {
       headers: response.headers(),
       body: (await response.json()) as U,
     };
+  }
+
+  @logStep("Get auth token from cookies")
+  async getAuthToken() {
+    const token = (await this.page.context().cookies()).find((c) => c.name === "Authorization")!.value;
+  return token;
   }
 }

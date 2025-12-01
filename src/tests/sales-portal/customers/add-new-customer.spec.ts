@@ -2,6 +2,7 @@ import { apiConfig } from "config/apiConfig";
 import { generateCustomerData } from "data/salesPortal/customers/generateCustomerData";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { STATUS_CODES } from "data/statusCodes";
+import { TAGS } from "data/tags";
 import { ICustomerResponse } from "data/types/customers.types";
 import { expect, test } from "fixtures"
 import _ from "lodash";
@@ -29,19 +30,22 @@ test.describe("[Sales Portal] [Customers]", async() => {
         id = "";
       });
 
-    test("Add new Customer", async ({loginUIService, homeUIService, customersListPage, customersListUIService, addNewCustomerPage, page})  => {
+    test("Add new Customer",
+        {
+        tag: [TAGS.CUSTOMERS, TAGS.SMOKE, TAGS.REGRESSION, TAGS.API],
+        },
+        async ({customersListPage, customersListUIService, addNewCustomerPage, page})  => {
         //   - залогиниться
-        token = await loginUIService.loginAsAdmin();
         
         //   - Перейти на страницу Customers List
-        await homeUIService.openModule("Customers");
+        await customersListUIService.open();
 
         //   - Перейти на страницу Add New Customer
         await customersListUIService.openAddNewCustomerPage();
     
         //   - Заполнить поля валидными данными
         const createdCustomer = generateCustomerData();
-        console.log(id);
+        token = await addNewCustomerPage.getAuthToken();
         await addNewCustomerPage.fillForm(createdCustomer);
 
         //   - Сохранить покупателя

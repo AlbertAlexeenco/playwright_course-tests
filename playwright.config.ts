@@ -23,10 +23,11 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 1,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: 5,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ["html"],
+    ["list"],
     [
       "allure-playwright",
       {
@@ -54,7 +55,7 @@ export default defineConfig({
     {
       name: "setup",
       use: { ...devices["Desktop Chrome"] },
-      testDir: "src/tests/ui/sales-portal",
+      testDir: "src/tests/sales-portal",
       testMatch: /\.setup\.ts/,
     },
     {
@@ -65,7 +66,7 @@ export default defineConfig({
         storageState: "src/.auth/user.json",
       },
       dependencies: ["setup"],
-      testDir: "src/tests/ui/sales-portal",
+      testDir: "src/tests/sales-portal",
     },
     {
       name: 'chromium',

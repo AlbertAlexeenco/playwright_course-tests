@@ -12,12 +12,12 @@ test.describe("[Sales Portal] [Products]", async () => {
     id = "";
   });
 
-  test(
-    "Add new product with services",
+  test("Add new product with services",
     {
-      tag: [TAGS.SMOKE, TAGS.REGRESSION, TAGS.PRODUCTS],
+      tag: [TAGS.UI, TAGS.SMOKE, TAGS.PRODUCTS],
     },
     async ({ addNewProductUIService, productsListPage }) => {
+
       await addNewProductUIService.open();
       const createdProduct = await addNewProductUIService.create();
       id = createdProduct._id;
@@ -27,6 +27,7 @@ test.describe("[Sales Portal] [Products]", async () => {
     },
   );
 
+  
   test.skip("Add new product with services MID OLD", async ({
     loginUIService,
     // homeUIService,

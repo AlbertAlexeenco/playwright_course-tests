@@ -27,23 +27,21 @@ test.describe("[Sales Portal] [Products]", () => {
         await productsListUIService.assertProductInTable(product.name, { visible: true });
       },
     );
+}
+})
 
-
-
-
-  test.skip("Search by name", async ({
+    /*
+  test.skip("Search by name OLD", async ({
     loginUIService,
     productsApiService,
     productsListUIService,
     productsListPage,
   }) => {
-    /*
-    login
-    create product via api
-    go to products list page
-    search by product name
-    verify product in table
-    */
+    // login
+    // create product via api
+    // go to products list page
+    // search by product name
+    // verify product in table
     token = await loginUIService.loginAsAdmin();
     const product = await productsApiService.create(token);
     await productsListUIService.open();
@@ -51,7 +49,7 @@ test.describe("[Sales Portal] [Products]", () => {
     await expect(productsListPage.tableRowByName(product.name)).toBeVisible();
   });
 
-  test.skip("Search by price", async ({
+  test.skip("Search by price OLD", async ({
     loginUIService,
     productsApiService,
     productsListUIService,
@@ -64,7 +62,7 @@ test.describe("[Sales Portal] [Products]", () => {
     await expect(productsListPage.tableRowByName(product.name)).toBeVisible();
   });
 
-  test.skip("Search by manufacturer", async ({
+  test.skip("Search by manufacturer OLD", async ({
     loginUIService,
     productsApiService,
     productsListUIService,
@@ -76,5 +74,5 @@ test.describe("[Sales Portal] [Products]", () => {
     await productsListUIService.search(product.manufacturer);
     await expect(productsListPage.tableRowByName(product.name)).toBeVisible();
   });
-}
-})
+  */
+

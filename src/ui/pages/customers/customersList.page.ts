@@ -3,6 +3,7 @@ import { SalesPortalPage } from "ui/pages/salesPortal.page";
 import { ConfirmationModal } from "ui/pages/confirmation.modal";
 import { CustomersTableHeader, ICustomerInTable } from "data/types/customers.types";
 import { COUNTRIES } from "data/salesPortal/customers/countries";
+import { logStep } from "utils/report/logStep.utils";
 
 
 
@@ -48,10 +49,12 @@ export class CustomersListPage extends SalesPortalPage {
 
   readonly uniqueElement = this.addNewCustomerButton;
 
+  @logStep("Click Add New Customer btn on Customers List page")
   async clickAddNewCustomer() {
     await this.addNewCustomerButton.click();
   }
 
+  @logStep("Get first row customer data from Customers List table")
   async getFirstRowCustomer() : Promise<ICustomerInTable>{
     const [email, name, country, createdOn] = await this.firstRowCellsLocator.allInnerTexts(); 
     
@@ -62,7 +65,7 @@ export class CustomersListPage extends SalesPortalPage {
       createdOn: createdOn!
     }
   }
-
+  @logStep("Get customer data from Customers List table")
   async getCustomerData(customerName: string): Promise<ICustomerInTable> {
     //Variant 1
     // return {
@@ -95,7 +98,7 @@ export class CustomersListPage extends SalesPortalPage {
       createdOn: createdOn!
     };
   }
-
+  @logStep("Get all table data from Customers List table")
   async getTableData(): Promise<ICustomerInTable[]> {
     const data: ICustomerInTable[] = [];
 
@@ -112,20 +115,24 @@ export class CustomersListPage extends SalesPortalPage {
     return data;
   }
 
+  @logStep("Click action btn on Customers List table")
   async clickAction(productName: string, button: "edit" | "delete" | "details") {
     if (button === "edit") await this.editButton(productName).click();
     if (button === "delete") await this.deleteButton(productName).click();
     if (button === "details") await this.detailsButton(productName).click();
   }
 
+  @logStep("Click table header on Customers List page")
   async clickTableHeader(name: CustomersTableHeader) {
     await this.tableHeaderNamed(name).click();
   }
 
+  @logStep("Fill Search input on Customers List page")
    async fillSearchInput(text: string) {
     await this.searchInput.fill(text);
   }
-
+  
+  @logStep("Click Search btn on Customers List page")
   async clickSearch() {
     await this.searchButton.click();
   }

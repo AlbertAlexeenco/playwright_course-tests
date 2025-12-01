@@ -6,6 +6,7 @@ import { STATUS_CODES } from "data/statusCodes";
 import _ from "lodash";
 import { validateResponse } from "utils/validation/validateResponse.utils";
 import { IProduct } from "data/types/product.types";
+import { TAGS } from "data/tags";
 
 const { baseURL, endpoints } = apiConfig;
 
@@ -17,7 +18,12 @@ test.describe("[API] [Sales Portal] [Products]", () => {
     if (id) await productsApiService.delete(token, id);
   });
 
-  test("Create Product", async ({ loginApiService, productsApi }) => {
+  test("Create Product via API",
+    {
+      tag: [TAGS.SMOKE, TAGS.PRODUCTS, TAGS.API, TAGS.REGRESSION],
+    },
+    async ({ loginApiService, productsApi }) => {
+
     token = await loginApiService.loginAsAdmin();
     const productData = generateProductData();
 
@@ -35,7 +41,11 @@ test.describe("[API] [Sales Portal] [Products]", () => {
     expect(_.omit(actualProductData, ["_id", "createdOn"])).toEqual(productData);
   });
 
-  test("NOT create product with invalid data", async ({ loginApiService, productsApi }) => {
+  test("NOT create product with invalid data via API",
+    {
+      tag: [TAGS.PRODUCTS, TAGS.API, TAGS.REGRESSION],
+    },
+    async ({ loginApiService, productsApi }) => {
     token = await loginApiService.loginAsAdmin();
     const productData = generateProductData();
     const createdProduct = await productsApi.create({ ...productData, name: 123 } as unknown as IProduct, token);
