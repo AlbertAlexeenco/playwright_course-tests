@@ -1,4 +1,5 @@
 import { ICreatedOn, ID, IResponseFields } from "./core.types"
+import { ICustomer, ICustomers } from "./customers.types"
 
 
 export interface IMetrics {
@@ -25,31 +26,6 @@ export interface IOrder extends ICreatedOn, ID {
     example: object,
     comments: object,
     history: object
-}
-
-export interface ICustomers {
-    totalNewCustomers: number,
-    topCustomers: ITopCustomers[],
-    customerGrowth: ICustomerGrowth[],
-}
-
-export interface ICustomer extends ICreatedOn, ID{
-    email: string,
-    name: string,
-    country: string,
-    city: string,
-    street: string,
-    house: number,
-    flat: number,
-    phone: string,
-    notes: string,
-}
-
-export interface ITopCustomers {
-    customerName: string,
-    customerEmail: string,
-    totalSpent: number,
-    ordersCount: number,
 }
 
 export interface IDate {

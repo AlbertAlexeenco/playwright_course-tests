@@ -5,6 +5,8 @@ export const apiConfig = {
   endpoints: {
     products: "/api/products",
     productById: (id: string) => `/api/products/${id}/`,
+    customers: "/api/customers",
+    customerById: (id: string) => `/api/customers/${id}/`,
     productsAll: "/api/products/all",
     login: "/api/login",
     metrics: "/api/metrics",
