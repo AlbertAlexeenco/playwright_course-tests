@@ -1,4 +1,5 @@
 import { ProductsApiService } from "api/service/products.service";
+import { TAGS } from "data/tags";
 import { test, expect } from "fixtures";
 
 // Реализовать е2е тест со следующими шагами:
@@ -23,10 +24,14 @@ test.describe("[Sales Portal] [Products]", async() => {
         id = "";
     });
 
-    test("Edit Product", async({ loginUIService, productsApiService, productsListUIService, editProductUIService }) => {
+    test("Edit Product",
+        {
+            tag: [TAGS.SMOKE, TAGS.PRODUCTS, TAGS.UI, TAGS.REGRESSION],
+        },
+        async({ productsListPage, productsApiService, productsListUIService, editProductUIService }) => {
 
         //залогиниться
-        token = await loginUIService.loginAsAdmin();
+        token = await productsListPage.getAuthToken();
 
         //Создать продукт через API
         const createdProduct = await productsApiService.create(token);

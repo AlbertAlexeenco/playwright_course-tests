@@ -1,6 +1,8 @@
 import { Locator } from "@playwright/test";
 import { SalesPortalPage } from "../salesPortal.page";
 import { ICustomer } from "data/types/customers.types";
+import { log } from "console";
+import { logStep } from "utils/report/logStep.utils";
 
 export class AddNewCustomerPage extends SalesPortalPage {
     readonly title = this.page.locator("h2.page-title-text");
@@ -17,6 +19,7 @@ export class AddNewCustomerPage extends SalesPortalPage {
 
     readonly uniqueElement = this.emailInput;
 
+    @logStep("Fill Add New Customer form")
     async fillForm(customerData: Partial<ICustomer>) {
         if (customerData.email) await this.emailInput.fill(customerData.email);
         if (customerData.name) await this.nameInput.fill(customerData.name);
@@ -29,6 +32,7 @@ export class AddNewCustomerPage extends SalesPortalPage {
         if (customerData.notes) await this.notesInput.fill(customerData.notes);
     }
     
+    @logStep("Click Save btn on Add New Customer page")
     async clickSave() {
     await this.saveButton.click();
     }

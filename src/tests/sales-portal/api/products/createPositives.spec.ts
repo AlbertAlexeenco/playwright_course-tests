@@ -1,6 +1,7 @@
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import { createPositiveProductCases } from "data/salesPortal/products/positiveProductData";
 import { createProductSchema } from "data/schemas/products/create.schema";
+import { TAGS } from "data/tags";
 import { IProduct } from "data/types/product.types";
 import { test, expect } from "fixtures/api.fixture";
 import _ from "lodash";
@@ -33,15 +34,19 @@ test.describe("[API] [Sales Portal] [Products]", () => {
 
     for (const {title, productData, expectedStatus} of createPositiveProductCases) {
 
-        test(`Create Product with ${title}`, async ({productsApi }) => {
+        test(`Create Product with ${title}`,
+        {
+        tag: [TAGS.PRODUCTS, TAGS.REGRESSION, TAGS.API],
+        },
+        async ({productsApi }) => {
             const productDataGenerated = generateProductData(productData);
             const createdProduct = await productsApi.create(productDataGenerated as IProduct, token);
 
             validateResponse(createdProduct, {
-                  status: expectedStatus,
-                  schema: createProductSchema,
-                  IsSuccess: true,
-                  ErrorMessage: null,
+                    status: expectedStatus,
+                    schema: createProductSchema,
+                    IsSuccess: true,
+                    ErrorMessage: null,
                 });
             
             id = createdProduct.body.Product._id;

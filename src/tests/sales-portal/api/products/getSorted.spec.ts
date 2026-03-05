@@ -1,6 +1,7 @@
 import { test, expect } from "fixtures/api.fixture";
 import { STATUS_CODES } from "data/statusCodes";
 import { validateResponse } from "utils/validation/validateResponse.utils";
+import { TAGS } from "data/tags";
 
 test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
   test.describe("Search", () => {
@@ -10,12 +11,17 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
     test.beforeEach(async ({ loginApiService }) => {
       token = await loginApiService.loginAsAdmin();
     });
+
     test.afterEach(async ({ productsApiService }) => {
       if (id) await productsApiService.delete(token, id);
       id = "";
     });
 
-    test("Search by name", async ({ productsApiService, productsApi }) => {
+    test("Search by name", 
+      {
+        tag: [TAGS.PRODUCTS, TAGS.REGRESSION, TAGS.API],
+      },
+      async ({ productsApiService, productsApi }) => {
       const product = await productsApiService.create(token);
 
       const response = await productsApi.getSorted(token, { search: product.name });
@@ -36,7 +42,11 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
       expect.soft(total).toBeGreaterThanOrEqual(1);
     });
 
-    test("Search by price", async ({ productsApiService, productsApi }) => {
+    test("Search by price",
+      {
+        tag: [TAGS.PRODUCTS, TAGS.REGRESSION, TAGS.API],
+      },
+      async ({ productsApiService, productsApi }) => {
       const product = await productsApiService.create(token);
 
       const response = await productsApi.getSorted(token, { search: product.price.toString() });
@@ -57,7 +67,11 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
       expect.soft(total).toBeGreaterThanOrEqual(1);
     });
 
-    test("Search by manufacturer", async ({ productsApiService, productsApi }) => {
+    test("Search by manufacturer",
+      {
+        tag: [TAGS.PRODUCTS, TAGS.REGRESSION, TAGS.API],
+      },
+       async ({ productsApiService, productsApi }) => {
       const product = await productsApiService.create(token);
 
       const response = await productsApi.getSorted(token, { search: product.manufacturer });
@@ -79,6 +93,7 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
     });
   });
 
+  
   test.describe("Sorting", () => {
     const ids: string[] = [];
     let token = "";
@@ -86,6 +101,7 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
     test.beforeEach(async ({ loginApiService }) => {
       token = await loginApiService.loginAsAdmin();
     });
+
     test.afterEach(async ({ productsApiService }) => {
       if (ids.length) {
         for (const id of ids) {
@@ -95,7 +111,11 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
       }
     });
 
-    test("SortField: createdOn, sortOrder: asc", async ({ productsApiService, productsApi, page }) => {
+    test("SortField: createdOn, sortOrder: asc",
+      {
+        tag: [TAGS.PRODUCTS, TAGS.REGRESSION, TAGS.API],
+      },
+      async ({ productsApiService, productsApi, page }) => {
       const product1 = await productsApiService.create(token);
       await page.waitForTimeout(1000);
       const product2 = await productsApiService.create(token);
@@ -132,7 +152,11 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
       expect.soft(total).toBeGreaterThanOrEqual(2);
     });
 
-    test("SortField: createdOn, sortOrder: desc", async ({ productsApiService, productsApi, page }) => {
+    test("SortField: createdOn, sortOrder: desc",
+      {
+        tag: [TAGS.PRODUCTS, TAGS.REGRESSION, TAGS.API],
+      },
+      async ({ productsApiService, productsApi, page }) => {
       const product1 = await productsApiService.create(token);
       await page.waitForTimeout(1000);
       const product2 = await productsApiService.create(token);
@@ -169,7 +193,11 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
       expect.soft(total).toBeGreaterThanOrEqual(2);
     });
 
-    test("SortField: manufacturer, sortOrder: desc", async ({ productsApiService, productsApi, page }) => {
+    test("SortField: manufacturer, sortOrder: desc",
+      {
+        tag: [TAGS.PRODUCTS, TAGS.REGRESSION, TAGS.API],
+      },
+      async ({ productsApiService, productsApi, page }) => {
       const product1 = await productsApiService.create(token);
       await page.waitForTimeout(1000);
       const product2 = await productsApiService.create(token);

@@ -4,6 +4,7 @@ import { getProductSchema } from "data/schemas/products/get.schema";
 import { STATUS_CODES } from "data/statusCodes";
 import _ from "lodash";
 import { validateResponse } from "utils/validation/validateResponse.utils";
+import { TAGS } from "data/tags";
 
 
 const { baseURL, endpoints } = apiConfig;
@@ -16,7 +17,11 @@ test.describe("[API] [Sales Portal] [Products]", () => {
     await productsApiService.delete(token, id);
   });
 
-  test("Get Product By Id", async ({ loginApiService, productsApiService, productsApi }) => {
+  test("Get Product By Id",
+    {
+      tag: [TAGS.PRODUCTS, TAGS.SMOKE, TAGS.REGRESSION, TAGS.API],
+    },
+      async ({ loginApiService, productsApiService, productsApi }) => {
     //TODO: Preconditions
 
     token = await loginApiService.loginAsAdmin();

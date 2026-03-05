@@ -1,5 +1,6 @@
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import { createNegativeProductCases } from "data/salesPortal/products/negativeProductData";
+import { TAGS } from "data/tags";
 import { IProduct } from "data/types/product.types";
 import { test, expect } from "fixtures/api.fixture";
 import _ from "lodash";
@@ -17,17 +18,20 @@ test.describe("[API] [Sales Portal] [Products]", () => {
     })
 
     for (const {title, productData, expectedStatus} of createNegativeProductCases) {
+        test(`NOT create Product with ${title}`,
+          {
+            tag: [TAGS.PRODUCTS, TAGS.REGRESSION, TAGS.API],
+          },
+            async ({productsApi }) => {
+        const productDataGenerated = generateProductData(productData);
+        const createdProduct = await productsApi.create(productDataGenerated as IProduct, token);
 
-        test(`NOT create Product with ${title}`, async ({productsApi }) => {
-            const productDataGenerated = generateProductData(productData);
-            const createdProduct = await productsApi.create(productDataGenerated as IProduct, token);
-
-            validateResponse(createdProduct, {
-                  status: expectedStatus,
-                  IsSuccess: false,
-                  ErrorMessage: "Incorrect request body",
-                });
-        })
+        validateResponse(createdProduct, {
+              status: expectedStatus,
+              IsSuccess: false,
+              ErrorMessage: "Incorrect request body",
+            });
+    })
 
     }
 })

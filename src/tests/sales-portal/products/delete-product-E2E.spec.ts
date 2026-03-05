@@ -16,23 +16,20 @@
 // - Подключить модалку в PageObject страницы Products
 // - Использовать фикстуры
 
-import { credentials } from "config/env";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
-import { test, expect } from "fixtures/pages.fixture";
+import { TAGS } from "data/tags";
+import { test, expect } from "fixtures/business.fixture"
 
-test.describe("[Sales Portal] [Products]", () => {
+test.describe("[Sales Portal] [Products]", async () => {
 
-    test("Delete products from table", async ({ page, loginPage, homePage, productsListPage, addNewProductPage }) => {
+    test("Delete products from table",
+        {
+            tag: [TAGS.SMOKE, TAGS.PRODUCTS, TAGS.UI, TAGS.REGRESSION],
+        },
+        async ({ productsListUIService, homePage, productsListPage, addNewProductPage }) => {
     
-    await loginPage.open();
-    await loginPage.fillCredentials(credentials);
-    await loginPage.clickLoginBtn();
-    
-    await homePage.waitForOpened();
-    await homePage.clickOnViewModule("Products");
-
-    await productsListPage.waitForOpened();
+    await productsListUIService.open();
     await productsListPage.clickAddNewProduct();
     
     await addNewProductPage.waitForOpened();
